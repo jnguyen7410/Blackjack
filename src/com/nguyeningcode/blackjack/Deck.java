@@ -54,14 +54,19 @@ public class Deck {
             switch(i) {
                 case 0:
                     suit = Card.Suit.DIAMOND;
+                    break;
                 case 1:
                     suit = Card.Suit.HEART;
+                    break;
                 case 2:
                     suit = Card.Suit.CLUB;
+                    break;
                 case 3:
                     suit = Card.Suit.SPADE;
+                    break;
                 default:
                     // this should never happen
+                    break;
             }
 
             for (int j = 1; j <= 13; j++) {
