@@ -5,9 +5,9 @@ package com.nguyeningcode.blackjack;
  */
 public class Player {
     // player should have:
-    // hand(s), buyIn, name, position on the table
+    // hand(s), balance, name, position on the table
         // hand belongs to player
-    public double buyIn;
+    public double balance;
     public String name;
     public int tablePosition;
 
@@ -20,12 +20,12 @@ public class Player {
         this.hasDoubleDown = false;
     }
 
-    public double getBuyIn() {
-        return buyIn;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setBuyIn(double buyIn) {
-        this.buyIn = buyIn;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public String getName() {
