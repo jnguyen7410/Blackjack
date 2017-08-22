@@ -54,26 +54,48 @@ public class Deck {
             switch(i) {
                 case 0:
                     suit = Card.Suit.DIAMOND;
+                    break;
                 case 1:
                     suit = Card.Suit.HEART;
+                    break;
                 case 2:
                     suit = Card.Suit.CLUB;
+                    break;
                 case 3:
                     suit = Card.Suit.SPADE;
+                    break;
                 default:
                     // this should never happen
+                    break;
             }
 
             for (int j = 1; j <= 13; j++) {
+                Card card;
                 if (j == 1) {
                    //this is an Ace
-                    Card card = new Card (11, suit, 'A');
+                    card = new Card (11, suit, 'A');
+                } else if (j == 11) {
+                    card = new Card (10, suit, 'J');
+                } else if (j == 12) {
+                    card = new Card (10, suit, 'Q');
+                } else if (j == 13) {
+                    card = new Card (10, suit, 'K');
+                } else {
+                    card = new Card (j, suit, (char) (j + '0'));
                 }
-            }
 
+                result.add(card);
+            }
         }
 
         return result;
+    }
+
+
+    public static void printDeck(Deck deck) {
+        for (Card card : deck.cards) {
+            System.out.println(card.toString());
+        }
     }
 
 
