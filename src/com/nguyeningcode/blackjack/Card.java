@@ -29,4 +29,8 @@ public class Card {
         return faceValue;
     }
 
+    public String toString() {
+        return "Card: [value=" + value + ", suit=" + suit + ", faceValue=" + faceValue + "]";
+    }
+
 }
