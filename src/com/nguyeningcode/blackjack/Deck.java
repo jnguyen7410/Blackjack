@@ -91,6 +91,16 @@ public class Deck {
         return result;
     }
 
+    public static Deck shuffle(Deck deck) {
+        for (int i = 0; i < deck.cards.size(); i++) {
+            int randomIndex = (int) Math.random() * (deck.cards.size() - i) + i;
+            Card temp = deck.cards.get(i);
+            deck.cards.add(i, deck.cards.get(randomIndex));
+            deck.cards.add(randomIndex, temp);
+        }
+        return deck;
+    }
+
 
     public static void printDeck(Deck deck) {
         for (Card card : deck.cards) {
