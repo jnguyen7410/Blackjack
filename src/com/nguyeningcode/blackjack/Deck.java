@@ -74,6 +74,8 @@ public class Deck {
                 if (j == 1) {
                    //this is an Ace
                     card = new Card (11, suit, 'A');
+                } else if (j == 10) {
+                    card = new Card (10, suit, 'T');
                 } else if (j == 11) {
                     card = new Card (10, suit, 'J');
                 } else if (j == 12) {
@@ -89,6 +91,15 @@ public class Deck {
         }
 
         return result;
+    }
+
+    public static void shuffle(Deck deck) {
+        for (int i = 0; i < deck.cards.size(); i++) {
+            int randomIndex = (int) (Math.random() * (deck.cards.size() - i) + i);
+            Card temp = deck.cards.get(i);
+            deck.cards.set(i, deck.cards.get(randomIndex));
+            deck.cards.set(randomIndex, temp);
+        }
     }
 
 

@@ -5,8 +5,8 @@ package com.nguyeningcode.blackjack;
  */
 public class Dealer extends Player {
 
-    public Dealer() {
-
+    public Dealer(String name) {
+        super(name);
     }
 
 
