@@ -12,7 +12,7 @@ public class TestDriver {
         System.out.println("====================================================================================");
         System.out.println("====================================================================================");
         System.out.println("Shuffled deck: ");
-        deck = Deck.shuffle(deck);
+        Deck.shuffle(deck);
         Deck.printDeck(deck);
 
     }
