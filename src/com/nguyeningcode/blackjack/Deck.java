@@ -1,6 +1,7 @@
 package com.nguyeningcode.blackjack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by jnguyen on 8/19/17.
@@ -17,14 +18,19 @@ public class Deck {
         this.jokersIncluded = false;
         this.sizeOfDeck = 52;
         cards = generateDeck();
+        shuffleDeck();
     }
 
     public Deck (int numDecks) {
+        ArrayList<Card> tempDeck;
+        this.cards = new ArrayList<Card>();
         this.numDecks = numDecks;
         this.jokersIncluded = false;
         this.sizeOfDeck = 52 * numDecks;
         for (int i = 0; i < numDecks; i++) {
-            cards.addAll(generateDeck());
+            tempDeck = generateDeck();
+            shuffle(tempDeck);
+            this.cards.addAll(tempDeck);
         }
     }
 
@@ -93,20 +99,22 @@ public class Deck {
         return result;
     }
 
-    public static void shuffle(Deck deck) {
-        for (int i = 0; i < deck.cards.size(); i++) {
-            int randomIndex = (int) (Math.random() * (deck.cards.size() - i) + i);
-            Card temp = deck.cards.get(i);
-            deck.cards.set(i, deck.cards.get(randomIndex));
-            deck.cards.set(randomIndex, temp);
+    public void shuffleDeck() {
+        shuffle(this.cards);
+    }
+
+    public static void shuffle(ArrayList<Card> cards) {
+        for (int i = 0; i < cards.size(); i++) {
+            int randomIndex = (int) (Math.random() * (cards.size() - i) + i);
+            Card temp = cards.get(i);
+            cards.set(i, cards.get(randomIndex));
+            cards.set(randomIndex, temp);
         }
     }
 
 
-    public static void printDeck(Deck deck) {
-        for (Card card : deck.cards) {
-            System.out.println(card.toString());
-        }
+    public void printDeck() {
+       Card.printCards(this.cards);
     }
 
 

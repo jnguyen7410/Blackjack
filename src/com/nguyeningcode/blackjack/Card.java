@@ -1,5 +1,7 @@
 package com.nguyeningcode.blackjack;
 
+import java.util.ArrayList;
+
 /**
  * Created by jnguyen on 8/19/17.
  */
@@ -21,6 +23,10 @@ public class Card {
         return value;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     public Suit getSuit() {
         return suit;
     }
@@ -31,6 +37,18 @@ public class Card {
 
     public String toString() {
         return "Card: [value=" + value + ", suit=" + suit + ", faceValue=" + faceValue + "]";
+    }
+
+    public static String getCardDetails(ArrayList<Card> cards) {
+        String str = "";
+        for (Card card : cards) {
+            str += card.toString() + "\n";
+        }
+        return str;
+    }
+
+    public static void printCards(ArrayList<Card> cards){
+        System.out.println(getCardDetails(cards));
     }
 
 }
