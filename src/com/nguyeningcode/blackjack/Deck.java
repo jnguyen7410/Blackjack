@@ -117,5 +117,20 @@ public class Deck {
        Card.printCards(this.cards);
     }
 
+    public Card pop() {
+        return pop(0);
+    }
+
+    public Card pop(int index) {
+        if(this.cards.size() > index) {
+            Card topCard = this.cards.get(index);
+            this.cards.remove(index);
+            return topCard;
+        } else {
+            System.out.println("Not enough cards to pop!");
+            return null;
+        }
+    }
+
 
 }

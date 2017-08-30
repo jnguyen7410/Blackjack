@@ -14,6 +14,7 @@ public class Hand {
     public boolean soft;
     public boolean playable;
     public ArrayList<Card> cards;
+    public boolean canSplit;
 
     public Hand () {
         value = 0;
@@ -34,6 +35,14 @@ public class Hand {
         playable = !blackjack;
     }
 
+    public boolean canSplit() {
+        return this.canSplit;
+    }
+
+    public void setCanSplit(boolean canSplit) {
+        this.canSplit = canSplit;
+    }
+
     public int getValue() {
         return value;
     }
@@ -48,7 +57,6 @@ public class Hand {
 
     public void setDoubleDown(boolean doubleDown) {
         this.doubleDown = doubleDown;
-        this.playable = !doubleDown;
     }
 
     public int getBet() {
@@ -65,7 +73,6 @@ public class Hand {
 
     public void setBlackjack(boolean blackjack) {
         this.blackjack = blackjack;
-        this.playable = !blackjack;
     }
 
     public boolean isSoft() {
@@ -115,12 +122,54 @@ public class Hand {
     }
 
     public void addCard(Card card) {
-        //add a card
-        this.cards.add(card);
-        //if hand > 21 && soft
-        this.validateCardValues();
-        //check if its blackjack
-        blackjack = isBlackJack(this.cards);
+        if(this.playable) {
+            //add a card
+            this.cards.add(card);
+            //if hand > 21 && soft
+            this.validateCardValues();
+            //check if its blackjack
+            if(this.cards.size() == 2) {
+                blackjack = isBlackJack(this.cards);
+            }
+            if(this.value >= 21 || this.doubleDown) {
+                this.playable = false;
+            }
+        }
+    }
+
+    public void stay() {
+        this.playable = false;
+    }
+
+    public boolean checkSplit() {
+        if(this.cards.size() == 2) {
+            return this.cards.get(0).getFaceValue() == this.cards.get(1).getFaceValue();
+        }
+        return false;
+    }
+
+    public Hand split() {
+        if(canSplit()) {
+            ArrayList<Card> cards = new ArrayList<Card>();
+            cards.add(pop(1));
+            return new Hand(this.bet, cards);
+        }
+        return null;
+    }
+
+    public Card pop() {
+        return pop(0);
+    }
+
+    public Card pop(int index) {
+        if(this.cards.size() > index) {
+            Card topCard = this.cards.get(index);
+            this.cards.remove(index);
+            return topCard;
+        } else {
+            System.out.println("Not enough cards to pop!");
+            return null;
+        }
     }
 
     public void validateCardValues() {
@@ -133,6 +182,15 @@ public class Hand {
             }
             setValue(getHandValue(this.cards));
             setSoft(isSoft(this.cards));
+            setCanSplit(checkSplit());
         }
     }
+
+    public void doubleDown(Card card) {
+        this.bet *= 2;
+        this.setDoubleDown(true);
+        this.addCard(card);
+    }
+
+
 }
