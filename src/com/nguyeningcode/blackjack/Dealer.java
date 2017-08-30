@@ -9,6 +9,4 @@ public class Dealer extends Player {
         super(name, true);
     }
 
-
-
 }
