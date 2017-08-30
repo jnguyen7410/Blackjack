@@ -118,18 +118,11 @@ public class Deck {
     }
 
     public Card pop() {
-        return pop(0);
+        return CardUtil.pop(0, this.cards);
     }
 
     public Card pop(int index) {
-        if(this.cards.size() > index) {
-            Card topCard = this.cards.get(index);
-            this.cards.remove(index);
-            return topCard;
-        } else {
-            System.out.println("Not enough cards to pop!");
-            return null;
-        }
+        return CardUtil.pop(index, this.cards);
     }
 
 

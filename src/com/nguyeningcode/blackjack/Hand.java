@@ -15,6 +15,8 @@ public class Hand {
     public boolean playable;
     public ArrayList<Card> cards;
     public boolean canSplit;
+    public boolean won;
+    public boolean revealed;
 
     public Hand () {
         value = 0;
@@ -24,6 +26,8 @@ public class Hand {
         playable = true;
         soft = false;
         cards = new ArrayList<Card>();
+        won = false;
+        revealed = true;
     }
 
     public Hand (int bet, ArrayList<Card> cards) {
@@ -33,6 +37,27 @@ public class Hand {
         doubleDown = false;
         blackjack = isBlackJack(cards);
         playable = !blackjack;
+        won = false;
+        revealed = true;
+    }
+
+    public Hand (int bet, ArrayList<Card> cards, boolean revealed) {
+        this.cards = cards;
+        validateCardValues();
+        this.bet = bet;
+        doubleDown = false;
+        blackjack = isBlackJack(cards);
+        playable = !blackjack;
+        won = false;
+        this.revealed = revealed;
+    }
+
+    public boolean isWon() {
+        return won;
+    }
+
+    public void setWon(boolean won) {
+        this.won = won;
     }
 
     public boolean canSplit() {
@@ -158,18 +183,11 @@ public class Hand {
     }
 
     public Card pop() {
-        return pop(0);
+        return CardUtil.pop(0, this.cards);
     }
 
     public Card pop(int index) {
-        if(this.cards.size() > index) {
-            Card topCard = this.cards.get(index);
-            this.cards.remove(index);
-            return topCard;
-        } else {
-            System.out.println("Not enough cards to pop!");
-            return null;
-        }
+        return CardUtil.pop(index, this.cards);
     }
 
     public void validateCardValues() {

@@ -13,20 +13,16 @@ public class Player {
     public String name;
     public int tablePosition;
     public boolean isDealer;
-
     public ArrayList<Hand> hands;
 
-    public boolean hasDoubleDown;
-
-    public Player(String name) {
+    public Player(String name, double balance) {
         this.name = name;
-        this.hasDoubleDown = false;
         this.isDealer = false;
+        this.balance = balance;
     }
 
     public Player(String name, boolean isDealer) {
         this.name = name;
-        this.hasDoubleDown = false;
         this.isDealer = isDealer;
     }
 
