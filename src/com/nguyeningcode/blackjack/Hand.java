@@ -9,7 +9,7 @@ public class Hand {
 
     public int value;
     public boolean doubleDown;
-    public int bet;
+    public double bet;
     public boolean blackjack;
     public boolean soft;
     public boolean playable;
@@ -30,7 +30,55 @@ public class Hand {
         revealed = true;
     }
 
-    public Hand (int bet, ArrayList<Card> cards) {
+    public Hand (double bet) {
+        value = 0;
+        doubleDown = false;
+        this.bet = bet;
+        blackjack = false;
+        playable = true;
+        soft = false;
+        cards = new ArrayList<Card>();
+        won = false;
+        revealed = true;
+    }
+
+    public Hand (boolean revealed) {
+        value = 0;
+        doubleDown = false;
+        bet = 0;
+        blackjack = false;
+        playable = true;
+        soft = false;
+        cards = new ArrayList<Card>();
+        won = false;
+        this.revealed = revealed;
+    }
+
+    public Hand (ArrayList<Card> cards) {
+        value = 0;
+        doubleDown = false;
+        bet = 0;
+        blackjack = false;
+        playable = true;
+        soft = false;
+        this.cards = cards;
+        won = false;
+        revealed = true;
+    }
+
+    public Hand (ArrayList<Card> cards, boolean revealed) {
+        value = 0;
+        doubleDown = false;
+        bet = 0;
+        blackjack = false;
+        playable = true;
+        soft = false;
+        this.cards = cards;
+        won = false;
+        this.revealed = revealed;
+    }
+
+    public Hand (double bet, ArrayList<Card> cards) {
         this.cards = cards;
         validateCardValues();
         this.bet = bet;
@@ -41,16 +89,16 @@ public class Hand {
         revealed = true;
     }
 
-    public Hand (int bet, ArrayList<Card> cards, boolean revealed) {
-        this.cards = cards;
-        validateCardValues();
-        this.bet = bet;
-        doubleDown = false;
-        blackjack = isBlackJack(cards);
-        playable = !blackjack;
-        won = false;
-        this.revealed = revealed;
-    }
+//    public Hand (int bet, ArrayList<Card> cards, boolean revealed) {
+//        this.cards = cards;
+//        validateCardValues();
+//        this.bet = bet;
+//        doubleDown = false;
+//        blackjack = isBlackJack(cards);
+//        playable = !blackjack;
+//        won = false;
+//        this.revealed = revealed;
+//    }
 
     public boolean isWon() {
         return won;
@@ -84,11 +132,11 @@ public class Hand {
         this.doubleDown = doubleDown;
     }
 
-    public int getBet() {
+    public double getBet() {
         return bet;
     }
 
-    public void setBet(int bet) {
+    public void setBet(double bet) {
         this.bet = bet;
     }
 
@@ -143,7 +191,7 @@ public class Hand {
                 ", soft=" + soft +
                 '}' +
                 "\n" +
-                "Cards: \n" + Card.getCardDetails(this.cards);
+                "Cards: \n" + (this.cards.size()==2 && revealed == false ? this.cards.get(0).toString() + "\n" : Card.getCardDetails(this.cards));
     }
 
     public void addCard(Card card) {
@@ -151,7 +199,7 @@ public class Hand {
             //add a card
             this.cards.add(card);
             //if hand > 21 && soft
-            this.validateCardValues();
+            validateCardValues();
             //check if its blackjack
             if(this.cards.size() == 2) {
                 blackjack = isBlackJack(this.cards);
@@ -198,10 +246,10 @@ public class Hand {
                     break;
                 }
             }
-            setValue(getHandValue(this.cards));
-            setSoft(isSoft(this.cards));
-            setCanSplit(checkSplit());
         }
+        setValue(getHandValue(this.cards));
+        setSoft(isSoft(this.cards));
+        setCanSplit(checkSplit());
     }
 
     public void doubleDown(Card card) {
