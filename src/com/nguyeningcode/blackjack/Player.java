@@ -19,11 +19,13 @@ public class Player {
         this.name = name;
         this.isDealer = false;
         this.balance = balance;
+        this.hands = new ArrayList<Hand>();
     }
 
     public Player(String name, boolean isDealer) {
         this.name = name;
         this.isDealer = isDealer;
+        this.hands = new ArrayList<Hand>();
     }
 
     public double getBalance() {
