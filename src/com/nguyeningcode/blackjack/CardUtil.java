@@ -15,15 +15,15 @@ public class CardUtil {
         }
     }
 
-    public static void generateHands(ArrayList<Player> players, double[] bets, Dealer dealer, Deck deck) {
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).hands.add(new Hand(bets[i]));
-            players.get(i).setBalance(players.get(i).balance - bets[i]);
+    public static void generateHands(double[] bets, Dealer dealer, Deck deck) {
+        for (int i = 0; i < Game.players.size(); i++) {
+            Game.players.get(i).hands.add(new Hand(bets[i]));
+            Game.players.get(i).setBalance(Game.players.get(i).balance - bets[i]);
         }
         dealer.hands.add(new Hand(false));
 
         for (int i = 0; i < NUMBER_OF_CARDS_STARTING; i++) {
-            for (Player player : players) {
+            for (Player player : Game.players) {
                 player.hands.get(0).addCard(deck.pop());
             }
             dealer.hands.get(0).addCard(deck.pop());
