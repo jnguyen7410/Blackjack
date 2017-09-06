@@ -18,6 +18,7 @@ public class CardUtil {
     public static void generateHands(ArrayList<Player> players, double[] bets, Dealer dealer, Deck deck) {
         for (int i = 0; i < players.size(); i++) {
             players.get(i).hands.add(new Hand(bets[i]));
+            players.get(i).setBalance(players.get(i).balance - bets[i]);
         }
         dealer.hands.add(new Hand(false));
 

@@ -25,7 +25,7 @@ public class Game {
         dealer = new Dealer("Dealer");
 
         numPlayers = BlackJackUtil.getNumberOfPlayers(MAX_PLAYERS);
-        BlackJackUtil.getPlayers(players, numPlayers, MIN_BUY_IN);
+        BlackJackUtil.getPlayers(players, numPlayers);
 
         // generate the deck
         Deck deck = new Deck(4);
@@ -33,7 +33,7 @@ public class Game {
         /*    ROUND    */
         // get everyone's bets
         double[] bets = new double[numPlayers];
-        BlackJackUtil.getBetsForPlayers(players, bets, MIN_BUY_IN);
+        BlackJackUtil.getBetsForPlayers(players, bets);
 
 
         /*System.out.println("Deck before hands created: ");
