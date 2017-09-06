@@ -14,6 +14,11 @@ public class Game {
     public static Dealer dealer;
 
     public static void main(String[] args) {
+        playGame();
+    }
+
+
+    public static void playGame() {
 
         /*    SETUP    */
 
