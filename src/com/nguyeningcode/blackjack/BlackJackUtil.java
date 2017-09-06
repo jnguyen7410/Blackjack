@@ -31,34 +31,34 @@ public class BlackJackUtil {
         return numPlayers;
     }
 
-    public static void getBetsForPlayers(ArrayList<Player> players, double[] bets) {
+    public static void getBetsForPlayers(double[] bets) {
         double tempBet = -1;
         boolean error;
-        for (int i = 0; i < players.size(); i++) {
-            System.out.println("[" + players.get(i).getName() + "] Enter a bet for player \"" + players.get(i).getName() + "\" (>=" + Game.MIN_BUY_IN + "): ");
+        for (int i = 0; i < Game.players.size(); i++) {
+            System.out.println("[" + Game.players.get(i).getName() + "] Enter a bet for player \"" + Game.players.get(i).getName() + "\" (>=" + Game.MIN_BUY_IN + "): ");
             do {
                 try {
                     error = false;
                     tempBet = Double.parseDouble(in.nextLine());
                 } catch (Exception e) {
-                    System.out.println("[" + players.get(i).getName() + "] Please enter a valid number for your bet! (>=" + Game.MIN_BUY_IN + "): ");
+                    System.out.println("[" + Game.players.get(i).getName() + "] Please enter a valid number for your bet! (>=" + Game.MIN_BUY_IN + "): ");
                     error = true;
                 }
 
                 if (tempBet < Game.MIN_BUY_IN && !error) {
-                    System.out.println("[" + players.get(i).getName() + "] Please enter a bet greater then the minimum buy in! (>=" + Game.MIN_BUY_IN + "): ");
+                    System.out.println("[" + Game.players.get(i).getName() + "] Please enter a bet greater then the minimum buy in! (>=" + Game.MIN_BUY_IN + "): ");
                 }
 
-                if(!checkBetAgainstBalance(players.get(i).balance, tempBet) && !error) {
-                    System.out.println("[" + players.get(i).getName() + "] You don't have enough to bet that! Your balance is " + players.get(i).balance + " but your bet was " + tempBet + "): ");
+                if(!checkBetAgainstBalance(Game.players.get(i).balance, tempBet) && !error) {
+                    System.out.println("[" + Game.players.get(i).getName() + "] You don't have enough to bet that! Your balance is " + Game.players.get(i).balance + " but your bet was " + tempBet + "): ");
                 }
 
-            } while (tempBet < Game.MIN_BUY_IN || !checkBetAgainstBalance(players.get(i).balance, tempBet) || error);
+            } while (tempBet < Game.MIN_BUY_IN || !checkBetAgainstBalance(Game.players.get(i).balance, tempBet) || error);
             bets[i] = tempBet;
         }
     }
 
-    public static void getPlayers(ArrayList<Player> players, int numPlayers) {
+    public static void getPlayers(int numPlayers) {
         boolean error;
         for (int i = 0; i < numPlayers; i++) {
             System.out.println("[Player #" + (i+1) + "] Please input your name: ");
@@ -78,13 +78,45 @@ public class BlackJackUtil {
                     System.out.println("[" + name + "] Please enter a balance greater than " + Game.MIN_BUY_IN + "! (>=" + Game.MIN_BUY_IN + "): ");
                 }
             } while (balance < Game.MIN_BUY_IN || error);
-            players.add(new Player(name, balance));
+            Game.players.add(new Player(name, balance));
         }
     }
 
 
     public static boolean checkBetAgainstBalance(double balance, double bet) {
         return balance >= bet;
+    }
+
+    public static void dealerBlackjack() {
+        // errbody non-BJ
+        if (Hand.isBlackJack(Game.dealer.hands.get(0))) {
+            System.out.println("The dealer got a blackjack!");
+            for(Player player : Game.players) {
+                if(player.hands.get(0).playable) {
+                    player.hands.get(0).playable = false;
+                }
+            }
+        }
+    }
+
+    public static void playersBlackjack() {
+        for(Player player : Game.players) {
+            if(Hand.isBlackJack(player.hands.get(0))) {
+                System.out.println(player.getName() + " got a blackjack!");
+                player.hands.get(0).playable = false;
+                player.hands.get(0).setBlackjack(true);
+            }
+
+        }
+    }
+
+    public static boolean continueToGameLogic() {
+        for(Player player : Game.players) {
+            if(player.hands.get(0).playable) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

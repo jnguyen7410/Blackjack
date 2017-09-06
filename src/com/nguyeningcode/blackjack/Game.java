@@ -25,7 +25,7 @@ public class Game {
         dealer = new Dealer("Dealer");
 
         numPlayers = BlackJackUtil.getNumberOfPlayers(MAX_PLAYERS);
-        BlackJackUtil.getPlayers(players, numPlayers);
+        BlackJackUtil.getPlayers(numPlayers);
 
         // generate the deck
         Deck deck = new Deck(4);
@@ -33,7 +33,7 @@ public class Game {
         /*    ROUND    */
         // get everyone's bets
         double[] bets = new double[numPlayers];
-        BlackJackUtil.getBetsForPlayers(players, bets);
+        BlackJackUtil.getBetsForPlayers(bets);
 
 
         /*System.out.println("Deck before hands created: ");
@@ -43,7 +43,7 @@ public class Game {
         System.out.println("---------------------------------------------------------------");
         System.out.println("");*/
 
-        CardUtil.generateHands(players, bets, dealer, deck);
+        CardUtil.generateHands(bets, dealer, deck);
 
         /*System.out.println("Deck after hands created: ");
         System.out.println("");
@@ -55,6 +55,16 @@ public class Game {
         // print the current state
         CardUtil.printPlayerHands(dealer);
         CardUtil.printPlayersHands(players);
+
+
+        BlackJackUtil.playersBlackjack();
+        BlackJackUtil.dealerBlackjack();
+        if (BlackJackUtil.continueToGameLogic()) {
+            // game round logic goes here
+            System.out.println("Let's start the game!");
+        }
+
+        System.out.println("End game logic");
 
     }
 }

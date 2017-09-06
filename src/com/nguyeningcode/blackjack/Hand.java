@@ -164,6 +164,10 @@ public class Hand {
         return sum;
     }
 
+    public static boolean isBlackJack(Hand hand) {
+        return isBlackJack(hand.cards);
+    }
+
     public static boolean isBlackJack(ArrayList<Card> cards) {
         return getHandValue(cards) == 21 && cards.size() == 2;
     }
