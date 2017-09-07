@@ -94,6 +94,7 @@ public class BlackJackUtil {
             for(Player player : Game.players) {
                 if(player.hands.get(0).playable) {
                     player.hands.get(0).playable = false;
+                    player.hands.get(0).setWon(false);
                 }
             }
         }
@@ -105,6 +106,7 @@ public class BlackJackUtil {
                 System.out.println(player.getName() + " got a blackjack!");
                 player.hands.get(0).playable = false;
                 player.hands.get(0).setBlackjack(true);
+                player.hands.get(0).setWon(true);
             }
 
         }
@@ -119,4 +121,93 @@ public class BlackJackUtil {
         return false;
     }
 
+    public static void roundLogic() {
+        for(Player player : Game.players) {
+            for(Hand hand : player.hand) {
+                if(hand.playable) {
+                    playerOptions(player, hand);
+                }
+            }
+        }
+    }
+
+    public static void playerOptions(Player player, Hand hand) {
+        System.out.print(player.getName() + ", your hand is: " + hand.toString());
+        printMenu(hand);
+
+        boolean error;
+        int menuOption = 0;
+
+        do {
+            try {
+                error = false;
+                menuOption = Integer.parseInt(in.nextLine())
+            } catch(Exception e) {
+                System.out.println("Your selection of '" + menuOption + "' is invalid")
+                printMenu(hand);
+            }
+
+            if(!validateMenuInput(hand, menuOption) && !error) {
+                System.out.println("You selected an invalid option");
+                printMenu(hand);
+            }
+
+        } while (!validateMenuInput(hand, menuOption) || error);
+        switch(menuOption){
+            case 1:
+                hand.playable = false;
+                break;
+            case 2:
+                hand.addCard()
+
+        }
+    }
+
+    public static void printMenu(Hand hand) {
+        System.out.println("Please select one of the following options: \n");
+        canStay(Hand hand);
+        canHit(Hand hand);
+        canDoubleDown(Hand hand);
+        canSplit(Hand hand);
+    }
+
+    public static boolean canStay(Hand hand) {
+        if(hand.playable && Hand.getHandValue(hand.cards) <= 21) {
+            System.out.println("1 - Stay \n");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean canHit(Hand hand) {
+        if(hand.playable && Hand.getHandValue(hand.cards) < 21 && !hand.isDoubleDown()) {
+            System.out.println("2 - Hit \n");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean canDoubleDown(Hand hand) {
+        if(hand.playable && Hand.getHandValue(hand.cards) < 21 && !hand.isDoubleDown() && hand.size() == 2) {
+            System.out.println("3 - Double down \n");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean canSplit(Hand hand) {
+        if(hand.playable && !hand.isDoubleDown() && hand.checksplit()) {
+            System.out.println("4 - Split");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean validateMenuInput(Hand hand, int input) {
+        if(canStay(hand) && input == 1) {return true};
+        if(canHit(hand) && input == 2) {return true};
+        if(canDoubleDown(hand) && input == 3) {return true};
+        if(canSplit(hand) && input == 4)) {return true};
+        return false;
+    }
 }
