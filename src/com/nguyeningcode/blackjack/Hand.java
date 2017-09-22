@@ -156,6 +156,10 @@ public class Hand {
         this.soft = soft;
     }
 
+    public boolean isPlayable() { return playable; }
+
+    public void setPlayable(boolean playable) { this.playable = playable ; }
+
     public static int getHandValue(ArrayList<Card> cards) {
         int sum = 0;
         for (Card card : cards) {

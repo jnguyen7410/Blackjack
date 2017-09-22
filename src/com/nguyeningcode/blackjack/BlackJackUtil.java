@@ -123,7 +123,7 @@ public class BlackJackUtil {
 
     public static void roundLogic() {
         for(Player player : Game.players) {
-            for(Hand hand : player.hand) {
+            for(Hand hand : player.hands) {
                 if(hand.playable) {
                     playerOptions(player, hand);
                 }
@@ -133,33 +133,32 @@ public class BlackJackUtil {
 
     public static void playerOptions(Player player, Hand hand) {
         System.out.print(player.getName() + ", your hand is: " + hand.toString());
-        printMenu(hand);
 
         boolean error;
         int menuOption = 0;
 
         do {
             try {
+                printMenu(hand);
                 error = false;
                 menuOption = Integer.parseInt(in.nextLine())
             } catch(Exception e) {
                 System.out.println("Your selection of '" + menuOption + "' is invalid")
-                printMenu(hand);
             }
 
             if(!validateMenuInput(hand, menuOption) && !error) {
                 System.out.println("You selected an invalid option");
-                printMenu(hand);
             }
 
         } while (!validateMenuInput(hand, menuOption) || error);
         switch(menuOption){
             case 1:
-                hand.playable = false;
+                hand.setPlayable(false);
                 break;
             case 2:
-                hand.addCard()
-
+                hand.addCard();
+                break;
+            // PLEASE CONTINUE HERE LAZY BUM
         }
     }
 
