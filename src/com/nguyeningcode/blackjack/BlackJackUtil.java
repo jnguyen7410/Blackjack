@@ -104,7 +104,7 @@ public class BlackJackUtil {
         for(Player player : Game.players) {
             if(Hand.isBlackJack(player.hands.get(0))) {
                 System.out.println(player.getName() + " got a blackjack!");
-                player.hands.get(0).playable = false;
+                player.hands.get(0).setPlayable(false);
                 player.hands.get(0).setBlackjack(true);
                 player.hands.get(0).setWon(true);
             }
@@ -121,17 +121,17 @@ public class BlackJackUtil {
         return false;
     }
 
-    public static void roundLogic() {
+    public static void roundLogic(Deck deck) {
         for(Player player : Game.players) {
             for(Hand hand : player.hands) {
-                if(hand.playable) {
-                    playerOptions(player, hand);
+                while(hand.playable) {
+                    playerOptions(player, hand, deck);
                 }
             }
         }
     }
 
-    public static void playerOptions(Player player, Hand hand) {
+    public static void playerOptions(Player player, Hand hand, Deck deck) {
         System.out.print(player.getName() + ", your hand is: " + hand.toString());
 
         boolean error;
@@ -156,8 +156,25 @@ public class BlackJackUtil {
                 hand.setPlayable(false);
                 break;
             case 2:
-                hand.addCard();
+                hand.addCard(deck.pop());
+
+                if(checkForBust(hand)) {
+                    hand.setPlayable(false);
+                    System.out.println("Ouch, busted!")
+                } else {
+                    printMenu(hand);
+                }
+
                 break;
+            case 3:
+                hand.doubleDown(deck.pop())
+                if(checkForBust(hand)) {
+                    System.out.println("Ouch, busted!")
+                }
+                break;
+            case 4:
+                Hand newHand = hand.split();
+                
             // PLEASE CONTINUE HERE LAZY BUM
         }
     }
@@ -207,6 +224,13 @@ public class BlackJackUtil {
         if(canHit(hand) && input == 2) {return true};
         if(canDoubleDown(hand) && input == 3) {return true};
         if(canSplit(hand) && input == 4)) {return true};
+        return false;
+    }
+
+    public static boolean checkForBust(Hand hand) {
+        if(getHandValue(hand) > 21) {
+            return true
+        }
         return false;
     }
 }
