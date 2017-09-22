@@ -213,7 +213,7 @@ public class Hand {
                 blackjack = isBlackJack(this.cards);
             }
             if(this.value >= 21 || this.doubleDown) {
-                this.playable = false;
+                this.setPlayable(false);
             }
         }
     }
