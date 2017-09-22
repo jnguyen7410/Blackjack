@@ -134,16 +134,16 @@ public class BlackJackUtil {
     public static void playerOptions(Player player, Hand hand, Deck deck) {
         System.out.print(player.getName() + ", your hand is: " + hand.toString());
 
-        boolean error;
+        boolean error = false;
         int menuOption = 0;
 
         do {
             try {
                 printMenu(hand);
                 error = false;
-                menuOption = Integer.parseInt(in.nextLine())
+                menuOption = Integer.parseInt(in.nextLine());
             } catch(Exception e) {
-                System.out.println("Your selection of '" + menuOption + "' is invalid")
+                System.out.println("Your selection of '" + menuOption + "' is invalid");
             }
 
             if(!validateMenuInput(hand, menuOption) && !error) {
@@ -160,16 +160,16 @@ public class BlackJackUtil {
 
                 if(checkForBust(hand)) {
                     hand.setPlayable(false);
-                    System.out.println("Ouch, busted!")
+                    System.out.println("Ouch, busted!");
                 } else {
                     printMenu(hand);
                 }
 
                 break;
             case 3:
-                hand.doubleDown(deck.pop())
+                hand.doubleDown(deck.pop());
                 if(checkForBust(hand)) {
-                    System.out.println("Ouch, busted!")
+                    System.out.println("Ouch, busted!");
                 }
                 break;
             case 4:
@@ -181,10 +181,10 @@ public class BlackJackUtil {
 
     public static void printMenu(Hand hand) {
         System.out.println("Please select one of the following options: \n");
-        canStay(Hand hand);
-        canHit(Hand hand);
-        canDoubleDown(Hand hand);
-        canSplit(Hand hand);
+        canStay(hand);
+        canHit(hand);
+        canDoubleDown(hand);
+        canSplit(hand);
     }
 
     public static boolean canStay(Hand hand) {
@@ -212,7 +212,7 @@ public class BlackJackUtil {
     }
 
     public static boolean canSplit(Hand hand) {
-        if(hand.playable && !hand.isDoubleDown() && hand.checksplit()) {
+        if(hand.playable && !hand.isDoubleDown() && hand.checkSplit()) {
             System.out.println("4 - Split");
             return true;
         }
@@ -220,16 +220,16 @@ public class BlackJackUtil {
     }
 
     public static boolean validateMenuInput(Hand hand, int input) {
-        if(canStay(hand) && input == 1) {return true};
-        if(canHit(hand) && input == 2) {return true};
-        if(canDoubleDown(hand) && input == 3) {return true};
-        if(canSplit(hand) && input == 4)) {return true};
+        if(canStay(hand) && input == 1) {return true;}
+        if(canHit(hand) && input == 2) {return true;}
+        if(canDoubleDown(hand) && input == 3) {return true;}
+        if(canSplit(hand) && input == 4) {return true;}
         return false;
     }
 
     public static boolean checkForBust(Hand hand) {
-        if(getHandValue(hand) > 21) {
-            return true
+        if(Hand.getHandValue(hand.cards) > 21) {
+            return true;
         }
         return false;
     }
