@@ -14,6 +14,7 @@ public class Player {
     public int tablePosition;
     public boolean isDealer;
     public ArrayList<Hand> hands;
+    public Hand tempHand;
 
     public Player(String name, double balance) {
         this.name = name;

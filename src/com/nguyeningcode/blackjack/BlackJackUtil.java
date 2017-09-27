@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class BlackJackUtil {
 
     public static Scanner in = new Scanner(System.in);
+    public static boolean hasSplit = false;
 
     public static int getNumberOfPlayers(int MAX_PLAYERS) {
         System.out.println("How many players? (1-10) : ");
@@ -114,18 +115,28 @@ public class BlackJackUtil {
 
     public static boolean continueToGameLogic() {
         for(Player player : Game.players) {
-            if(player.hands.get(0).playable) {
-                return true;
+            for (Hand hand : player.hands) {
+                if(hand.isPlayable()) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     public static void roundLogic(Deck deck) {
+        hasSplit = false;
         for(Player player : Game.players) {
+            if (player.tempHand != null){
+                player.hands.add(player.tempHand);
+                player.tempHand = null;
+            }
             for(Hand hand : player.hands) {
                 while(hand.playable) {
                     playerOptions(player, hand, deck);
+                    if (hasSplit) {
+                        return;
+                    }
                 }
             }
         }
@@ -143,40 +154,47 @@ public class BlackJackUtil {
                 error = false;
                 menuOption = Integer.parseInt(in.nextLine());
             } catch(Exception e) {
+                error = true;
                 System.out.println("Your selection of '" + menuOption + "' is invalid");
             }
 
             if(!validateMenuInput(hand, menuOption) && !error) {
                 System.out.println("You selected an invalid option");
             }
+            else if (!error) {
+                switch(menuOption){
+                    case 1:
+                        hand.setPlayable(false);
+                        break;
+                    case 2:
+                        hand.addCard(deck.pop());
 
-        } while (!validateMenuInput(hand, menuOption) || error);
-        switch(menuOption){
-            case 1:
-                hand.setPlayable(false);
-                break;
-            case 2:
-                hand.addCard(deck.pop());
+                        if(checkForBust(hand)) {
+                            hand.setPlayable(false);
+                            System.out.println("Ouch, busted!");
+                        } else {
+                            printMenu(hand);
+                        }
 
-                if(checkForBust(hand)) {
-                    hand.setPlayable(false);
-                    System.out.println("Ouch, busted!");
-                } else {
-                    printMenu(hand);
+                        break;
+                    case 3:
+                        hand.doubleDown(deck.pop());
+                        if(checkForBust(hand)) {
+                            System.out.println("Ouch, busted!");
+                        }
+                        break;
+                    case 4:
+                        player.tempHand = hand.split(); //check to see that card is removed from original hand
+                        hasSplit = true;
+                        break;
+
+
+                        // PLEASE CONTINUE HERE LAZY BUM
                 }
+            }
 
-                break;
-            case 3:
-                hand.doubleDown(deck.pop());
-                if(checkForBust(hand)) {
-                    System.out.println("Ouch, busted!");
-                }
-                break;
-            case 4:
-                Hand newHand = hand.split();
-                
-            // PLEASE CONTINUE HERE LAZY BUM
-        }
+        } while (hand.isPlayable() && (!validateMenuInput(hand, menuOption) || error));
+
     }
 
     public static void printMenu(Hand hand) {
