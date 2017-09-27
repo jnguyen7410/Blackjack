@@ -6,9 +6,12 @@ import java.util.ArrayList;
  * Created by jnguyen on 8/21/17.
  */
 public class TestDriver {
+    private static final int MAX_PLAYERS = 5;
+
     public static void main(String[] args) {
         //testDeck();
-        testHand();
+        //testHand();
+
     }
 
     public static void testDeck() {
@@ -41,6 +44,5 @@ public class TestDriver {
         hand.addCard(card04);
         System.out.println(hand.toString());
     }
-
 
 }

@@ -64,12 +64,15 @@ public class Game {
 
         BlackJackUtil.playersBlackjack();
         BlackJackUtil.dealerBlackjack();
-        if (BlackJackUtil.continueToGameLogic()) {
+        while (BlackJackUtil.continueToGameLogic()) {
             // game round logic goes here
-            System.out.println("Let's start the game!");
+            // System.out.println("Let's start the game!");
+            BlackJackUtil.roundLogic(deck);
         }
 
         System.out.println("End game logic");
+
+        CardUtil.printPlayersHands(players);
 
     }
 }
