@@ -91,13 +91,18 @@ public class BlackJackUtil {
     public static void dealerBlackjack() {
         // errbody non-BJ
         if (Hand.isBlackJack(Game.dealer.hands.get(0))) {
+            // make the non-BlackJack hands of each player unplayable and set setWon to false
             System.out.println("The dealer got a blackjack!");
             for(Player player : Game.players) {
-                if(player.hands.get(0).playable) {
-                    player.hands.get(0).playable = false;
+                if(player.hands.get(0).isPlayable()) {
+                    player.hands.get(0).setPlayable(false);
                     player.hands.get(0).setWon(false);
                 }
             }
+            // Update the dealer hand to unplayable and set the hand to win
+            Game.dealer.hands.get(0).setPlayable(false);
+            Game.dealer.hands.get(0).setBlackjack(true);
+            Game.dealer.hands.get(0).setWon(true);
         }
     }
 
@@ -125,6 +130,7 @@ public class BlackJackUtil {
     }
 
     public static void roundLogic(Deck deck) {
+        // Players Logic
         hasSplit = false;
         for(Player player : Game.players) {
             if (player.tempHand != null){
@@ -140,6 +146,53 @@ public class BlackJackUtil {
                 }
             }
         }
+
+        // Dealer Logic:
+            // 1. Print the dealer hand since the second card is initially hidden
+            // 2. While the hand value is less than 17, keep hitting
+            // 3. Check for busts after the dealer's hand has reached at least a value of 17
+
+        System.out.println("Dealer\'s hand is : " + Card.getCardDetails(Game.dealer.hands.get(0).cards));
+        Hand dealerHand = Game.dealer.hands.get(0);
+        while(Hand.getHandValue(dealerHand.cards) < 17) {
+            dealerHand.addCard(deck.pop());
+            System.out.print("Dealer drew a " + dealerHand.cards.get(dealerHand.cards.size()-1).toString());
+        }
+        if(checkForBust(dealerHand)) {
+            dealerHand.setWon(false);
+        }
+
+        // End game logic for determining winners, losers, payouts and losses:
+            // 1. Check if player's hand is Blackjack
+            // 2. ELSE check if dealer got Blackjack
+            // 3. ELSE check for player's hand is bust
+            // 4. ELSE check for dealer's hand is bust
+            // 5. ELSE compare dealer's hand with player's hand
+
+        // This is looking ugly, any way to optimize?
+        for(Player player : Game.players) {
+            for(Hand hand : player.hands) {
+                if(hand.isBlackjack()) {
+                    // player gets 1.5 * hand's bet
+                } else if(dealerHand.isBlackjack()) {
+                    // player loses 1 * hand's bet
+                } else if(checkForBust(hand)) {
+                    // player loses 1 * hand's bet
+                } else if(checkForBust(dealerHand)) {
+                    // player wins 1 * hand's bet
+                } else {
+                    if(Hand.getHandValue(hand.cards) > Hand.getHandValue(dealerHand.cards)) {
+                        // player wins 1 * hand's bet
+                    } else if(Hand.getHandValue(hand.cards) < Hand.getHandValue(dealerHand.cards)) {
+                        // player loses 1 * hand's bet
+                    } else {
+                        // tie: nobody wins
+                    }
+                }
+            }
+        }
+
+        // End game logic for determining valid balances, winner/losers, and whether to continue playing
     }
 
     public static void playerOptions(Player player, Hand hand, Deck deck) {
@@ -168,6 +221,7 @@ public class BlackJackUtil {
                         break;
                     case 2:
                         hand.addCard(deck.pop());
+                        System.out.print(player.getName() + ", you drew a" + hand.cards.get(hand.cards.size()-1).toString());
 
                         if(checkForBust(hand)) {
                             hand.setPlayable(false);
@@ -187,8 +241,10 @@ public class BlackJackUtil {
                         player.tempHand = hand.split(); //check to see that card is removed from original hand
                         hasSplit = true;
                         break;
-
-
+                    default:
+                        // is there a special case that could break this switch?
+                        System.out.println("WARNING! Default switch case for player's menu option": menuOption);
+                        break;
                         // PLEASE CONTINUE HERE LAZY BUM
                 }
             }
@@ -250,5 +306,20 @@ public class BlackJackUtil {
             return true;
         }
         return false;
+    }
+
+    public static void printHandResult(Player player, Hand hand, String result) {
+        switch(result) {
+            case "win":
+                System.out.print(player.getName() + ", you win $" + hand.)
+                break;
+            case "lose":
+                break;
+            case "tie":
+                break;
+            default:
+                System.out.println("Invalid string was passed somehow, please look into this.")
+                break;
+        }
     }
 }
