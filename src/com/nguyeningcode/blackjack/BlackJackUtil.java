@@ -154,7 +154,7 @@ public class BlackJackUtil {
 
         System.out.println("Dealer\'s hand is : " + Card.getCardDetails(Game.dealer.hands.get(0).cards));
         Hand dealerHand = Game.dealer.hands.get(0);
-        while(Hand.getHandValue(dealerHand.cards) < 17) {
+        while(Hand.getHandValue(dealerHand) < 17) {
             dealerHand.addCard(deck.pop());
             System.out.print("Dealer drew a " + dealerHand.cards.get(dealerHand.cards.size()-1).toString());
         }
@@ -174,16 +174,14 @@ public class BlackJackUtil {
             for(Hand hand : player.hands) {
                 if(hand.isBlackjack()) {
                     // player gets 1.5 * hand's bet
-                } else if(dealerHand.isBlackjack()) {
-                    // player loses 1 * hand's bet
-                } else if(checkForBust(hand)) {
+                } else if(dealerHand.isBlackjack() || checkForBust(hand)) {
                     // player loses 1 * hand's bet
                 } else if(checkForBust(dealerHand)) {
                     // player wins 1 * hand's bet
                 } else {
-                    if(Hand.getHandValue(hand.cards) > Hand.getHandValue(dealerHand.cards)) {
+                    if(Hand.getHandValue(hand) > Hand.getHandValue(dealerHand)) {
                         // player wins 1 * hand's bet
-                    } else if(Hand.getHandValue(hand.cards) < Hand.getHandValue(dealerHand.cards)) {
+                    } else if(Hand.getHandValue(hand) < Hand.getHandValue(dealerHand)) {
                         // player loses 1 * hand's bet
                     } else {
                         // tie: nobody wins
@@ -220,8 +218,9 @@ public class BlackJackUtil {
                         hand.setPlayable(false);
                         break;
                     case 2:
-                        hand.addCard(deck.pop());
-                        System.out.print(player.getName() + ", you drew a" + hand.cards.get(hand.cards.size()-1).toString());
+                        Card tempCard = deck.pop();
+                        hand.addCardtempCard);
+                        System.out.print(player.getName() + ", you drew a " + tempCard.toString());
 
                         if(checkForBust(hand)) {
                             hand.setPlayable(false);
@@ -243,7 +242,7 @@ public class BlackJackUtil {
                         break;
                     default:
                         // is there a special case that could break this switch?
-                        System.out.println("WARNING! Default switch case for player's menu option": menuOption);
+                        System.out.println("WARNING! Default switch case for player's menu option: " + menuOption);
                         break;
                         // PLEASE CONTINUE HERE LAZY BUM
                 }
@@ -262,7 +261,7 @@ public class BlackJackUtil {
     }
 
     public static boolean canStay(Hand hand) {
-        if(hand.playable && Hand.getHandValue(hand.cards) <= 21) {
+        if(hand.playable && Hand.getHandValue(hand) <= 21) {
             System.out.println("1 - Stay \n");
             return true;
         }
@@ -270,7 +269,7 @@ public class BlackJackUtil {
     }
 
     public static boolean canHit(Hand hand) {
-        if(hand.playable && Hand.getHandValue(hand.cards) < 21 && !hand.isDoubleDown()) {
+        if(hand.playable && Hand.getHandValue(hand) < 21 && !hand.isDoubleDown()) {
             System.out.println("2 - Hit \n");
             return true;
         }
@@ -278,7 +277,7 @@ public class BlackJackUtil {
     }
 
     public static boolean canDoubleDown(Hand hand) {
-        if(hand.playable && Hand.getHandValue(hand.cards) < 21 && !hand.isDoubleDown() && hand.size() == 2) {
+        if(hand.playable && Hand.getHandValue(hand) < 21 && !hand.isDoubleDown() && hand.size() == 2) {
             System.out.println("3 - Double down \n");
             return true;
         }
@@ -302,7 +301,7 @@ public class BlackJackUtil {
     }
 
     public static boolean checkForBust(Hand hand) {
-        if(Hand.getHandValue(hand.cards) > 21) {
+        if(Hand.getHandValue(hand) > 21) {
             return true;
         }
         return false;
@@ -311,14 +310,14 @@ public class BlackJackUtil {
     public static void printHandResult(Player player, Hand hand, String result) {
         switch(result) {
             case "win":
-                System.out.print(player.getName() + ", you win $" + hand.)
+                System.out.print(player.getName() + ", you win $");
                 break;
             case "lose":
                 break;
             case "tie":
                 break;
             default:
-                System.out.println("Invalid string was passed somehow, please look into this.")
+                System.out.println("Invalid string was passed somehow, please look into this.");
                 break;
         }
     }
