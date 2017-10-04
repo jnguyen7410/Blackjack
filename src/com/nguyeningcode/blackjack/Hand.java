@@ -168,6 +168,15 @@ public class Hand {
         return sum;
     }
 
+    public static int getHandValue(Hand hand) {
+        ArrayList<Card> cards = hand.cards;
+        int sum = 0;
+        for (Card card : cards) {
+            sum += card.getValue();
+        }
+        return sum;
+    }
+
     public static boolean isBlackJack(Hand hand) {
         return isBlackJack(hand.cards);
     }
